@@ -14,10 +14,10 @@ class SessionController extends Controller
         return view('landing');
     }
     public function indexInit(){
-        return view('dashboard/initiator');
+        return view('/initiator/index');
     }
     public function indexOrg(){
-        return view('dashboard/organizer');
+        return view('/organizer/index');
     }
     public function indexRegister(){
         return view('register');
@@ -49,9 +49,9 @@ class SessionController extends Controller
 
         if(Auth::attempt($infoLogin)){
             if (Auth::user()->role == 'initiator'){
-                return redirect('/initiator');
+                return redirect('/initiator/index');
             } else {
-                return redirect('/organizer');
+                return redirect('/organizer/index');
             }
         } else {
             return redirect('/');

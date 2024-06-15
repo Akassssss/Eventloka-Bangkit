@@ -7,6 +7,6 @@ use Illuminate\Http\Request;
 class EventController extends Controller
 {
     public function indexCreateEvent(){
-        return view('create');
+        return view('initiator/create');
     }
 }
