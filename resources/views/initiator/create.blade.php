@@ -112,7 +112,7 @@
         }
         input[type="text"],
         input[type="date"],
-        input[type="time"],
+        input[type="number"],
         textarea,
         select {
             width: 100%;
@@ -125,6 +125,15 @@
         textarea {
             resize: vertical;
             height: 100px;
+        }
+        .scale-container {
+            display: flex;
+            align-items: center;
+        }
+        .scale-container input[type="number"] {
+            width: auto;
+            flex: 1;
+            margin-right: 10px;
         }
         .buttons {
             display: flex;
@@ -150,16 +159,7 @@
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <h2>EventLoka</h2>
-        <ul>
-            <li><a href="/initiator">Dashboard</a></li>
-            <li><a href="#">My Events</a></li>
-            <li><a href="/initiator/create">Create Event</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="/logout">Logout</a></li>
-        </ul>
-    </div>
+    @include('components.sidebarinit')
     <div class="main-content">
        <div class="container">
         <h2>Create New Event</h2>
@@ -170,11 +170,14 @@
             <label for="date">Date:</label>
             <input type="date" id="date" name="date" required>
 
-            <label for="time">Time:</label>
-            <input type="time" id="time" name="time" required>
-
             <label for="location">Location:</label>
             <input type="text" id="location" name="location" required>
+            
+            <label for="scale">Scale:</label>
+            <div class="scale-container">
+                <input type="number" id="scale" name="scale" required>
+                <span>Persons</span>
+            </div>
 
             <label for="description">Description:</label>
             <textarea id="description" name="description" required></textarea>
