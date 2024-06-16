@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EventLoka - Initiator Dashboard</title>
+    <title>EventLoka - Organizer Dashboard</title>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -72,6 +72,13 @@
         .content {
             margin-top: 20px;
         }
+        .section {
+            margin-bottom: 40px;
+        }
+        .section h2 {
+            color: #1d2d44;
+            margin-bottom: 20px;
+        }
         .event {
             background-color: #ffffff;
             padding: 20px;
@@ -79,12 +86,38 @@
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        .event h2 {
+        .event-link {
+            text-decoration: none;
+            color: inherit; /* Optionally inherit the color from parent */
+        }
+
+        .event-link:hover {
+            /* Optional: Define hover styles */
+            text-decoration: none; /* Remove underline on hover */
+            color: inherit; /* Optionally inherit the color from parent */
+        }
+        .event h3 {
             margin-top: 0;
             color: #1d2d44;
         }
         .event p {
             color: #748cab;
+        }
+        .event button {
+            margin-top: 10px;
+            background-color: #1d2d44;
+            color: #f0ebd8;
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .event button:hover {
+            background-color: #3e5c76;
+        }
+        .event button:focus {
+            outline: none;
         }
         .footer {
             text-align: center;
@@ -101,31 +134,32 @@
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <h2>EventLoka</h2>
-        <ul>
-            <li><a href="/initiator">Dashboard</a></li>
-            <li><a href="#">My Events</a></li>
-            <li><a href="/initiator/create">Create Event</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="/logout">Logout</a></li>
-        </ul>
-    </div>
+    @include('components.sidebarorg')
     <div class="main-content">
-        <div class="header">
-            <h1>Initiator Dashboard</h1>
-            <a href="initiator/create"><button>Create New Event</button></a>
-        </div>
         <div class="content">
-            <div class="event">
-                <h2>Event 1</h2>
-                <p>Description of Event 1. This section includes details about the event.</p>
+            <div class="section">
+                <h2>Available Events</h2>
+                    @foreach ($data as $item)
+                        <a href="{{url('/organizer/detail/'.$item->id)}}" class="event-link">
+                            <div class="event">
+                                <h3>{{$item->name}}</h3>
+                                <p>{{$item->description}}</p>
+                                <button>Take Event</button>
+                            </div>
+                        </a>
+                    @endforeach
+                <div class="event">
+                    <h3>Event 1</h3>
+                    <p>Description of Event 1. This section includes details about the event.</p>
+                    <button>Take Event</button>
+                </div>
+                <div class="event">
+                    <h3>Event 2</h3>
+                    <p>Description of Event 2. This section includes details about the event.</p>
+                    <button>Take Event</button>
+                </div>
+                <!-- Repeat this block for more available events -->
             </div>
-            <div class="event">
-                <h2>Event 2</h2>
-                <p>Description of Event 2. This section includes details about the event.</p>
-            </div>
-            <!-- Repeat this block for more events -->
         </div>
         <div class="footer">
             © 2024 EventLoka. All rights reserved. <a href="#">Privacy Policy</a>

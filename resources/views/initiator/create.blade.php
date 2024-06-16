@@ -112,7 +112,7 @@
         }
         input[type="text"],
         input[type="date"],
-        input[type="time"],
+        input[type="number"],
         textarea,
         select {
             width: 100%;
@@ -125,6 +125,15 @@
         textarea {
             resize: vertical;
             height: 100px;
+        }
+        .scale-container {
+            display: flex;
+            align-items: center;
+        }
+        .scale-container input[type="number"] {
+            width: auto;
+            flex: 1;
+            margin-right: 10px;
         }
         .buttons {
             display: flex;
@@ -150,31 +159,26 @@
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <h2>EventLoka</h2>
-        <ul>
-            <li><a href="/initiator">Dashboard</a></li>
-            <li><a href="#">My Events</a></li>
-            <li><a href="/initiator/create">Create Event</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="/logout">Logout</a></li>
-        </ul>
-    </div>
+    @include('components.sidebarinit')
     <div class="main-content">
        <div class="container">
         <h2>Create New Event</h2>
-        <form action="create_event_process.php" method="post">
-            <label for="event_name">Event Name:</label>
-            <input type="text" id="event_name" name="event_name" required>
+        <form action="/initiator/create" method="post">
+            @csrf
+            <label for="name">Event Name:</label>
+            <input type="text" id="name" name="name" required>
 
             <label for="date">Date:</label>
             <input type="date" id="date" name="date" required>
 
-            <label for="time">Time:</label>
-            <input type="time" id="time" name="time" required>
-
             <label for="location">Location:</label>
             <input type="text" id="location" name="location" required>
+            
+            <label for="scale">Scale:</label>
+            <div class="scale-container">
+                <input type="number" id="scale" name="scale" required>
+                <span>Persons</span>
+            </div>
 
             <label for="description">Description:</label>
             <textarea id="description" name="description" required></textarea>
@@ -188,6 +192,21 @@
                 <!-- Tambahkan opsi kategori lain sesuai kebutuhan -->
             </select>
 
+            <label for="theme">Theme:</label>
+            <input type="text" id="theme" name="theme" required>
+
+            <label for="budget">Budget:</label>
+            <input type="number" id="budget" name="budget" required>
+            
+            <label for="price">Preferred Fee:</label>
+            <select id="price" name="price" required>
+                <option value="1"> < 1 Juta</option>
+                <option value="2">1 Juta - 5 Juta</option>
+                <option value="3">5 Juta - 10 Juta</option>
+                <option value="4"> > 10 Juta</option>
+                <!-- Tambahkan opsi kategori lain sesuai kebutuhan -->
+            </select>
+            
             <div class="buttons">
                 <button type="submit" name="action" value="post">Post Listing</button>
                 <button type="submit" name="action" value="search">Search Organizers</button>

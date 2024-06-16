@@ -13,12 +13,7 @@ class SessionController extends Controller
     public function index(){
         return view('landing');
     }
-    public function indexInit(){
-        return view('dashboard/initiator');
-    }
-    public function indexOrg(){
-        return view('dashboard/organizer');
-    }
+    
     public function indexRegister(){
         return view('register');
     }
@@ -54,7 +49,7 @@ class SessionController extends Controller
                 return redirect('/organizer');
             }
         } else {
-            return redirect('/');
+            return redirect('/login');
         }
     }
 

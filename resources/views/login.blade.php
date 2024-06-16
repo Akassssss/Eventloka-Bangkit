@@ -78,7 +78,7 @@
         <form action="{{url('login')}}" method="post">
             @csrf
             <label for="email">Email:</label>
-            <input type="text" id="email" name="email" required>
+            <input type="text" value="{{Session::get('email') }}" id="email" name="email" required>
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
 

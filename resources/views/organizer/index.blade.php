@@ -124,16 +124,7 @@
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <h2>EventLoka</h2>
-        <ul>
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="#">Available Events</a></li>
-            <li><a href="#">My Events</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="/logout">Logout</a></li>
-        </ul>
-    </div>
+    @include('components.sidebarorg')
     <div class="main-content">
         <div class="header">
             <h1>Organizer Dashboard</h1>
