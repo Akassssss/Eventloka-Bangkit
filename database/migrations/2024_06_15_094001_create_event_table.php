@@ -16,8 +16,8 @@ return new class extends Migration
             $table->timestamps();
             $table->date('date');
             $table->string('name');
-            $table->string('initiator');
-            $table->string('organizer');
+            $table->string('initiator')->nullable();
+            $table->string('organizer')->nullable();
             $table->string('location');
             $table->string('category');
             $table->string('theme')->nullable();
@@ -25,7 +25,10 @@ return new class extends Migration
             $table->string('scale');
             $table->boolean('app');
             $table->bigInteger('price');
+            $table->bigInteger('budget');
             $table->integer('rate')->nullable();
+            $table->boolean('public')->nullable();
+            $table->boolean('done')->nullable();
             
         });
     }

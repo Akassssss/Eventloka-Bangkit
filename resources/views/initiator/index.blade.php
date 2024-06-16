@@ -79,6 +79,16 @@
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
+        .event-link {
+            text-decoration: none;
+            color: inherit; /* Optionally inherit the color from parent */
+        }
+
+        .event-link:hover {
+            /* Optional: Define hover styles */
+            text-decoration: none; /* Remove underline on hover */
+            color: inherit; /* Optionally inherit the color from parent */
+        }
         .event h2 {
             margin-top: 0;
             color: #1d2d44;
@@ -98,25 +108,27 @@
         .footer a:hover {
             text-decoration: underline;
         }
+        .a{
+            style
+        }
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <h2>EventLoka</h2>
-        <ul>
-            <li><a href="/initiator">Dashboard</a></li>
-            <li><a href="#">My Events</a></li>
-            <li><a href="/initiator/create">Create Event</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="/logout">Logout</a></li>
-        </ul>
-    </div>
+    @include('components.sidebarinit')
     <div class="main-content">
         <div class="header">
             <h1>Initiator Dashboard</h1>
             <a href="initiator/create"><button>Create New Event</button></a>
         </div>
         <div class="content">
+            @foreach ($data as $item)
+                <a href="{{url('/initiator/event/'.$item->id)}}" class="event-link">
+                    <div class="event">
+                        <h2>{{$item->name}}</h2>
+                        <p> {{$item->description}}</p>
+                    </div>
+                </a>
+            @endforeach
             <div class="event">
                 <h2>Event 1</h2>
                 <p>Description of Event 1. This section includes details about the event.</p>

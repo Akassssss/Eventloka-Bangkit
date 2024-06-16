@@ -22,5 +22,7 @@ class Event extends Model
         'price',
         'rate',
         'app',
+        'budget',
+        'public',
     ];
 }

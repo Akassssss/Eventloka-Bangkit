@@ -86,6 +86,16 @@
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
+        .event-link {
+            text-decoration: none;
+            color: inherit; /* Optionally inherit the color from parent */
+        }
+
+        .event-link:hover {
+            /* Optional: Define hover styles */
+            text-decoration: none; /* Remove underline on hover */
+            color: inherit; /* Optionally inherit the color from parent */
+        }
         .event h3 {
             margin-top: 0;
             color: #1d2d44;
@@ -126,12 +136,18 @@
 <body>
     @include('components.sidebarorg')
     <div class="main-content">
-        <div class="header">
-            <h1>Organizer Dashboard</h1>
-        </div>
         <div class="content">
             <div class="section">
                 <h2>Available Events</h2>
+                    @foreach ($data as $item)
+                        <a href="{{url('/organizer/detail/'.$item->id)}}" class="event-link">
+                            <div class="event">
+                                <h3>{{$item->name}}</h3>
+                                <p>{{$item->description}}</p>
+                                <button>Take Event</button>
+                            </div>
+                        </a>
+                    @endforeach
                 <div class="event">
                     <h3>Event 1</h3>
                     <p>Description of Event 1. This section includes details about the event.</p>
@@ -143,18 +159,6 @@
                     <button>Take Event</button>
                 </div>
                 <!-- Repeat this block for more available events -->
-            </div>
-            <div class="section">
-                <h2>My Events</h2>
-                <div class="event">
-                    <h3>My Event 1</h3>
-                    <p>Description of My Event 1. This section includes details about the event.</p>
-                </div>
-                <div class="event">
-                    <h3>My Event 2</h3>
-                    <p>Description of My Event 2. This section includes details about the event.</p>
-                </div>
-                <!-- Repeat this block for more events being managed by the organizer -->
             </div>
         </div>
         <div class="footer">
