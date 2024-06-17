@@ -17,7 +17,13 @@ class EventController extends Controller
         return view('/initiator/index')->with('data', $data);
     }
     public function indexOrg(){
-        return view('/organizer/index');
+        $userId = auth()->user()->id;
+        $events = Event::where('public', true)->get();
+        $data = $events->filter(function ($event) use ($userId) {
+            $organizers = explode(',', $event->organizer);
+            return !in_array($userId, $organizers);
+        });
+        return view('/organizer/index')->with('data',$data);
     }
     public function indexCreateEvent(){
         return view('initiator/create');
@@ -33,10 +39,23 @@ class EventController extends Controller
             // Memecah string organizer menjadi array
             $organizers = explode(',', $data->organizer);
         }
-        $eo = User::whereIn('id', $organizers)->get();    
+        $organizer = Organizer::whereIn('userId', $organizers)->get();    
 
+        return view('initiator/request')->with('data', $data)->with('organizer', $organizer);
+    }
+    public function ongoingEventInit(string $id){
 
-        return view('initiator/request')->with('eo',$eo)->with('data', $data);
+        
+        $data = Event::where('id', $id)->first();
+    
+
+        return view('initiator/ongoing')->with('data', $data);
+    }
+    
+    public function ongoingEventOrg(string $id){
+
+        $data = Event::where('id', $id)->first();    
+        return view('organizer/ongoing')->with('data', $data);
     }
     public function acceptRequestEvent(Request $request, string $id){
 
@@ -48,6 +67,76 @@ class EventController extends Controller
 
         return redirect('initiator');
 
+    }
+    public function updateOngoingEventInit(Request $request, string $id){
+        $data = Event::where('id',$id)->first();
+        if($request->input('rate') == $data->rate){
+            if($data->doneByOrg == true){
+                $upData = [
+                    'doneByInit'=> true,
+                    'done'=> true,
+                    'rateForOrg'=> $request->input('rateForOrg'),
+                ];
+            } else {
+                $upData = [
+                    'doneByInit'=> true,
+                    'rateForOrg'=> $request->input('rateForOrg'),
+                ];
+            }
+        } else {
+            if($data->doneByInit == true){
+                $upData = [
+                    'doneByInit'=> true,
+                    'doneByOrg'=> false,
+                    'rateForOrg'=> $request->input('rateForOrg'),
+                    'rate'=> $request->input('rate'),
+                ];
+            } else {
+                $upData = [
+                    'doneByInit'=> true,
+                    'rateForOrg'=> $request->input('rateForOrg'),
+                    'rate'=> $request->input('rate')
+                ];
+            }
+        }
+        Event::where('id', $id)->update($upData);
+        return redirect('initiator/my');
+    }
+    public function updateOngoingEventOrg(Request $request, string $id){
+        $data = Event::where('id',$id)->first();
+        if($request->input('rate') == $data->rate){
+            if($data->doneByInit == true){
+                $upData = [
+                    'doneByOrg'=> true,
+                    'done'=> true,
+                    'rateForInit'=> $request->input('rateForInit'),
+                ];
+            } else {
+                $upData = [
+                    'doneByOrg'=> true,
+                    'rateForInit'=> $request->input('rateForInit'),
+                ];
+            }
+        } else {
+            if($data->doneByInit == true){
+                $upData = [
+                    'doneByOrg'=> true,
+                    'doneByInit'=> false,
+                    'rateForInit'=> $request->input('rateForInit'),
+                    'rate'=> $request->input('rate'),
+                ];
+            } else {
+                $upData = [
+                    'doneByOrg'=> true,
+                    'rateForInit'=> $request->input('rateForInit'),
+                    'rate'=> $request->input('rate')
+                ];
+            }
+        }
+        
+        
+        Event::where('id', $id)->update($upData);
+        return redirect('initiator/my');
     }
 
     public function myEventInit(){
@@ -69,19 +158,11 @@ class EventController extends Controller
         ->with('done',$done);
     }
     public function myEventOrg(){
-        // $waiting = Event::where('initiator', auth()->user()->id)->where('public', true)
-        // ->where('organizer', null)->get();
-        // $reaching = Event::where('initiator', auth()->user()->id)->where('public', false)
-        // ->where('organizer', null)->get();
-        // $response = Event::where('initiator', auth()->user()->id)->where('public', true)
-        // ->whereNotNull('organizer')->get();
+
         $ongoing = Event::where('organizer', auth()->user()->id)->where('done', false)->where('public', false)->get();
         $done = Event::where('organizer', auth()->user()->id)->where('done', true)->get();
 
         return view('organizer/myevent')
-        // ->with('waiting',$waiting)
-        // ->with('reaching',$reaching)
-        // ->with('response',$response)
         ->with('ongoing',$ongoing)
         ->with('done',$done);
 
@@ -101,6 +182,8 @@ class EventController extends Controller
             ];
             Initiator::create($data);
         }
+        $initiator = Initiator::where('userId', $userId)->first();
+
         return view('initiator/profile')->with('initiator',$initiator);
 
     }
@@ -111,9 +194,12 @@ class EventController extends Controller
         if($organizer == null){
             $data = [
                 'userId' => $userId,
+                'email' => auth()->user()->email
             ];
             Organizer::create($data);
         }
+        $organizer = Organizer::where('userId', $userId)->first();
+
         return view('organizer/profile')->with('organizer',$organizer);
 
     }
@@ -137,7 +223,7 @@ class EventController extends Controller
         ];
         Organizer::where('userId', $userId)->update($data);
 
-        return view('organizer/editprofile')->with('organizer',$organizer);
+        return redirect('organizer/profile');
 
     }
 
@@ -209,6 +295,10 @@ class EventController extends Controller
     }
     public function detailAvailableOrg(string $id){
         $data = Event::where('id', $id)->first();
+        $organizer = Organizer::where('userId', auth()->user()->id)->first();
+        if (empty($organizer->name)|| empty($organizer->location) || empty($organizer->categorySpecialist) ||empty($organizer->scaleSpecialist) || empty($organizer->experience) ||empty($organizer->services)) {        
+            return redirect('organizer/profile')->with('alert', 'Please complete your profile first.');
+        }
         return view('/organizer/detail')->with('data',$data);
     }
     public function takeEvent(string $id){

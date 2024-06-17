@@ -147,7 +147,7 @@
             @if ($ongoing->isNotEmpty())
                 <h1>Ongoing</h1>
                 @foreach ($ongoing as $item)
-                    <a href="{{url('/organizer/event/'.$item->id)}}" class="event-link">
+                    <a href="{{url('/organizer/event/'.$item->id.'/ongoing')}}" class="event-link">
                         <div class="event">
                             <h2>{{$item->name}}</h2>
                             <p> {{$item->description}}</p>

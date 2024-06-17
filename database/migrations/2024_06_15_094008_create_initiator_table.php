@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('userId');
+            $table->string('email');
             $table->string('name');
             $table->integer('rate')->default(0);
             $table->integer('hired')->default(0);	;

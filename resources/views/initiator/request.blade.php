@@ -91,6 +91,45 @@
         .footer a:hover {
             text-decoration: underline;
         }
+        .popup-container {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .popup-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            /* max-width: 600px; */
+            border-radius: 5px;
+            position: relative;
+            max-height: 80vh; Maksimum tinggi popup
+            overflow-y: auto; /* Aktifkan scrollbar vertikal jika konten lebih panjang */
+            
+        }
+
+        .close-popup {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-popup:hover,
+        .close-popup:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
         
     </style>
 </head>
@@ -100,7 +139,7 @@
         <div class="container">
             <h2>Requests for {{$data->name}}</h2>
             <ul class="requests-list">
-                @foreach ($eo as $item)
+                @foreach ($organizer as $item)
                     <li class="request-item">
                         <h3>{{ $item->name }}</h3>
                         <p><strong>Contact:</strong> {{ $item->email }}</p>
@@ -113,9 +152,24 @@
                                     <i class="fas fa-check"></i> Approve
                                 </button>
                             </form>
-                            <button type="button">
+                            <button type="button" class="view-details-btn">
                                 <i class="fas fa-search"></i> View Details
                             </button>
+                        </div>
+                        <div class="popup-container">
+                            <div class="popup-content">
+                                <span class="close-popup">&times;</span>
+                                <h2>Details of {{ $item->name }}</h2>
+                                <p><strong>Email:</strong> {{ $item->email }}</p>
+                                <p><strong>Rating:</strong> {{ $item->rate }}</p>
+                                <p><strong>Hired:</strong> {{ $item->hired }}</p>
+                                <p><strong>Experience in Years:</strong> {{ $item->experience }}</p>
+                                <p><strong>Location:</strong> {{ $item->location }}</p>
+                                <p><strong>Specialized Category :</strong> {{ $item->categorySpecialist }}</p>
+                                <p><strong>Specialized Scale:</strong> {{ $item->scaleSpecialist }}</p>
+                                <p><strong>About:</strong> {{ $item->services }}</p>
+                                <!-- Tambahkan informasi detail lainnya sesuai kebutuhan -->
+                            </div>
                         </div>
                         {{-- <p><strong>Message:</strong> {{ $request->message }}</p> --}}
                     </li>
@@ -127,4 +181,38 @@
         </div>
     </div>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const viewDetailsBtns = document.querySelectorAll('.view-details-btn');
+        const popups = document.querySelectorAll('.popup-container');
+        const closeBtns = document.querySelectorAll('.close-popup');
+
+        viewDetailsBtns.forEach((btn, index) => {
+            btn.addEventListener('click', function() {
+                popups[index].style.display = 'block';
+            });
+        });
+
+        closeBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                btn.closest('.popup-container').style.display = 'none';
+            });
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        const popups = document.querySelectorAll('.popup-content');
+
+        popups.forEach(popup => {
+            // Misalnya, jika tinggi konten melebihi 80% tinggi jendela, atur maksimum tinggi popup
+            const windowHeight = window.innerHeight;
+            const maxHeight = windowHeight * 0.8; // 80% tinggi jendela
+
+            if (popup.scrollHeight > maxHeight) {
+                popup.style.maxHeight = maxHeight + 'px';
+                popup.style.overflowY = 'auto';
+            }
+        });
+    });
+
+</script>
 </html>

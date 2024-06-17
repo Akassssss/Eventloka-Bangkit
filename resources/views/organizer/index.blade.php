@@ -121,6 +121,16 @@
         .footer a:hover {
             text-decoration: underline;
         }
+        .event-link {
+            text-decoration: none;
+            color: inherit; /* Optionally inherit the color from parent */
+        }
+
+        .event-link:hover {
+            /* Optional: Define hover styles */
+            text-decoration: none; /* Remove underline on hover */
+            color: inherit; /* Optionally inherit the color from parent */
+        }
     </style>
 </head>
 <body>
@@ -132,19 +142,17 @@
         <div class="content">
             <div class="section">
                 <h2>Available Events</h2>
-                <div class="event">
-                    <h3>Event 1</h3>
-                    <p>Description of Event 1. This section includes details about the event.</p>
-                    <button>Take Event</button>
-                </div>
-                <div class="event">
-                    <h3>Event 2</h3>
-                    <p>Description of Event 2. This section includes details about the event.</p>
-                    <button>Take Event</button>
-                </div>
-                <!-- Repeat this block for more available events -->
+                @foreach ($data as $item)
+                    <a href="{{url('/organizer/detail/'.$item->id)}}" class="event-link">
+                        <div class="event">
+                            <h3>{{$item->name}}</h3>
+                            <p>{{$item->description}}</p>
+                            <button>Take Event</button>
+                        </div>
+                    </a>
+                @endforeach
             </div>
-            <div class="section">
+            {{-- <div class="section">
                 <h2>My Events</h2>
                 <div class="event">
                     <h3>My Event 1</h3>
@@ -155,7 +163,7 @@
                     <p>Description of My Event 2. This section includes details about the event.</p>
                 </div>
                 <!-- Repeat this block for more events being managed by the organizer -->
-            </div>
+            </div> --}}
         </div>
         <div class="footer">
             © 2024 EventLoka. All rights reserved. <a href="#">Privacy Policy</a>
