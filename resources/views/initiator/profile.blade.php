@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EventLoka - EO Requests</title>
+    <title>EventLoka - Initiator Profile</title>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -47,7 +47,7 @@
             padding: 30px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
+            max-width: 600px;
             width: 100%;
             text-align: left;
         }
@@ -59,24 +59,38 @@
             padding-bottom: 10px;
             margin-bottom: 20px;
         }
-        .requests-list {
-            list-style-type: none;
-            padding: 0;
+        .profile-detail {
+            margin-bottom: 20px;
         }
-        .request-item {
-            background-color: #f0ebd8;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        .profile-detail p {
+            color: #748cab;
+            margin-bottom: 10px;
+            line-height: 1.6;
         }
-        .request-item h3 {
-            margin: 0;
+        .profile-detail strong {
             color: #1d2d44;
         }
-        .request-item p {
-            margin: 5px 0;
-            color: #748cab;
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .buttons button {
+            width: calc(50% - 10px); /* Adjusted width for two buttons with space between */
+            padding: 10px;
+            background-color: #1d2d44;
+            color: #f0ebd8;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .buttons button:hover {
+            background-color: #3e5c76;
+        }
+        .buttons button:focus {
+            outline: none;
         }
         .footer {
             text-align: center;
@@ -91,36 +105,25 @@
         .footer a:hover {
             text-decoration: underline;
         }
-        
     </style>
 </head>
 <body>
     @include('components.sidebarinit')
     <div class="main-content">
         <div class="container">
-            <h2>Requests for {{$data->name}}</h2>
-            <ul class="requests-list">
-                @foreach ($eo as $item)
-                    <li class="request-item">
-                        <h3>{{ $item->name }}</h3>
-                        <p><strong>Contact:</strong> {{ $item->email }}</p>
-                        <div class="actions">
-                            <form action="{{url('/initiator/event/'.$data->id.'/request')}}" method="POST">
-                                @csrf
-                                @method('PUT')
-                                <input type="hidden" name="organizer" id="organizer" value="{{$item->id}}">
-                                <button type="submit">
-                                    <i class="fas fa-check"></i> Approve
-                                </button>
-                            </form>
-                            <button type="button">
-                                <i class="fas fa-search"></i> View Details
-                            </button>
-                        </div>
-                        {{-- <p><strong>Message:</strong> {{ $request->message }}</p> --}}
-                    </li>
-                @endforeach
-            </ul>
+            <h2>Profile</h2>
+            <div class="profile-detail">
+                <p><strong>Name:</strong> {{$initiator->name}}</p>
+                <p><strong>Email:</strong> {{auth()->user()->email}}</p>
+                <p><strong>Hire:</strong> {{$initiator->hired}}</p>
+                <p><strong>Rate:</strong> {{$initiator->rate == 0 ? '-' : $initiator->rate}}</p>
+                <p><strong>About:</strong></p>
+                <p>{{$initiator->about}}</p>
+            </div>
+            <div class="buttons">
+                <button type="button" onclick="window.location.href='{{url('/initiator/edit-profile')}}'">Edit Profile</button>
+                <button type="button" onclick="window.location.href='{{url('/logout')}}'">Logout</button>
+            </div>
         </div>
         <div class="footer">
             © 2024 EventLoka. All rights reserved. <a href="#">Privacy Policy</a>

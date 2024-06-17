@@ -15,5 +15,6 @@ class Initiator extends Model
         'rate',
         'hired',
         'location',
+        'about',
     ];
 }

@@ -28,7 +28,8 @@ return new class extends Migration
             $table->bigInteger('budget');
             $table->integer('rate')->nullable();
             $table->boolean('public')->nullable();
-            $table->boolean('done')->nullable();
+            $table->boolean('done')->default(false);
+            $table->boolean('taken')->default(false);
             
         });
     }

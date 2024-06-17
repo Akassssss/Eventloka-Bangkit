@@ -16,7 +16,9 @@ class Organizer extends Model
         'rate',
         'hired',
         'location',
-        'specialist',
+        'categorySpecialist',
+        'scaleSpecialist',
         'services',
+        'experience',
     ];
 }

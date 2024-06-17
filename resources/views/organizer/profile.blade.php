@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EventLoka - Event Details</title>
+    <title>EventLoka - Initiator Profile</title>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -59,15 +59,15 @@
             padding-bottom: 10px;
             margin-bottom: 20px;
         }
-        .detail {
+        .profile-detail {
             margin-bottom: 20px;
         }
-        .detail p {
+        .profile-detail p {
             color: #748cab;
             margin-bottom: 10px;
             line-height: 1.6;
         }
-        .detail strong {
+        .profile-detail strong {
             color: #1d2d44;
         }
         .buttons {
@@ -105,69 +105,33 @@
         .footer a:hover {
             text-decoration: underline;
         }
-        .event-link {
-            text-decoration: none;
-            color: inherit; /* Optionally inherit the color from parent */
-        }
-
-        .event-link:hover {
-            /* Optional: Define hover styles */
-            text-decoration: none; /* Remove underline on hover */
-            color: inherit; /* Optionally inherit the color from parent */
-        }
     </style>
 </head>
 <body>
-    @include('components.sidebarinit')
+    @include('components.sidebarorg')
     <div class="main-content">
         <div class="container">
-            <h2>{{$data->name}}</h2>
-            <div class="detail">
-                <p><strong>Date:</strong> {{$data->date}}</p>
-                <p><strong>Location:</strong> {{$data->location}}</p>
-                <p><strong>Scale:</strong> {{$data->scale}} Persons</p>
-                <p><strong>Description:</strong></p>
-                <p>{{$data->description}}</p>
-                <p><strong>Category:</strong> {{$data->category}}</p>
-                <p><strong>Theme:</strong> {{$data->theme}}</p>
-                <p><strong>Budget:</strong> {{$data->budget}}</p>
-                <p><strong>Preferred Fee:</strong> 
-                    @switch($data->price)
-                        @case(1)
-                            < 1 Juta
-                            @break
-                        @case(2)
-                            1 Juta - 5 Juta
-                            @break
-                        @case(3)
-                            5 Juta - 10 Juta
-                            @break
-                        @case(4)
-                            > 10 Juta
-                            @break
-                    @endswitch
-                </p>
+            <h2>Event Organizer Profile</h2>
+            <div class="profile-detail">
+                <p><strong>Name:</strong> {{$organizer->name}}</p>
+                <p><strong>Email:</strong> {{auth()->user()->email}}</p>
+                <p><strong>Hire:</strong> {{$organizer->hired}}</p>
+                <p><strong>Rate:</strong> {{$organizer->rate == 0 ? '-' : $organizer->rate}}</p>
+                <p><strong>Location:</strong> {{$organizer->location == 0 ? '-' : $organizer->location}}</p>
+                <p><strong>Usual Category:</strong> {{$organizer->categorySpecialist == 0 ? '-' : $organizer->categorySpecialist}}</p>
+                <p><strong>Usual Scale:</strong> {{$organizer->scaleSpecialist == 0 ? '-' : $organizer->scaleSpecialist}}</p>
+                <p><strong>Experience in Years:</strong> {{$organizer->experience == 0 ? '-' : $organizer->experience}}</p>
+                <p><strong>About:</strong></p>
+                <p>{{$organizer->services}}</p>
             </div>
             <div class="buttons">
-                <button type="button" ><a href="{{url('/initiator/event/'.$data->id.'/request')}}" class="event-link">Request List ({{$sum}})</a></button>
-                <button type="button" >Find Suitable EO</button>
+                <button type="button" onclick="window.location.href='{{url('/organizer/editprofile')}}'">Edit Profile</button>
+                <button type="button" onclick="window.location.href='{{url('/logout')}}'">Logout</button>
             </div>
         </div>
         <div class="footer">
             © 2024 EventLoka. All rights reserved. <a href="#">Privacy Policy</a>
         </div>
     </div>
-
-    <script>
-        function requestList() {
-            // Handle request list functionality, e.g., show a modal or perform an action
-            alert('Request List button clicked!');
-        }
-
-        function findEO() {
-            // Handle find EO functionality, e.g., redirect to search page or show results
-            alert('Find Suitable EO button clicked!');
-        }
-    </script>
 </body>
 </html>

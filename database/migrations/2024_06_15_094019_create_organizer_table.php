@@ -19,8 +19,10 @@ return new class extends Migration
             $table->integer('rate')->default(0);
             $table->integer('hired')->default(0);	;
             $table->string('location');
-            $table->string('specialist');
+            $table->string('categorySpecialist');
+            $table->integer('scaleSpecialist');
             $table->string('services');
+            $table->integer('experience');
         });
     }
 

@@ -23,6 +23,10 @@ Route::middleware(['isLogin'])->group(function(){
         Route::get('/initiator/create',[EventController::class, 'indexCreateEvent']);
         Route::post('/initiator/create',[EventController::class, 'storeEvent']);
         Route::get('/initiator/event/{id}',[EventController::class, 'detailEvent']);
+        Route::get('/initiator/event/{id}/request',[EventController::class, 'requestEvent']);
+        Route::put('/initiator/event/{id}/request',[EventController::class, 'acceptRequestEvent']);
+        Route::get('/initiator/my',[EventController::class, 'myEventInit']);
+        Route::get('/initiator/profile',[EventController::class, 'profileInit']);
         
     });
 
@@ -33,6 +37,10 @@ Route::middleware(['isLogin'])->group(function(){
         Route::get('/organizer/detail/{id}',[EventController::class, 'detailAvailableOrg']);
         Route::put('/organizer/take/{id}',[EventController::class, 'takeEvent']);
         Route::get('/organizer/event',[EventController::class, 'indexEventOrg']);
+        Route::get('/organizer/my',[EventController::class, 'myEventOrg']);
+        Route::get('/organizer/profile',[EventController::class, 'profileOrg']);
+        Route::get('/organizer/editprofile',[EventController::class, 'editProfileOrg']);
+        Route::put('/organizer/editprofile',[EventController::class, 'updateProfileOrg']);
         // Route::get('/organizer',[EventController::class, 'indexOrg']);
 
     });

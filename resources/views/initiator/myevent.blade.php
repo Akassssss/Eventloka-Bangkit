@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EventLoka - Organizer Dashboard</title>
+    <title>EventLoka - Initiator Dashboard</title>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -72,13 +72,6 @@
         .content {
             margin-top: 20px;
         }
-        .section {
-            margin-bottom: 40px;
-        }
-        .section h2 {
-            color: #1d2d44;
-            margin-bottom: 20px;
-        }
         .event {
             background-color: #ffffff;
             padding: 20px;
@@ -96,28 +89,12 @@
             text-decoration: none; /* Remove underline on hover */
             color: inherit; /* Optionally inherit the color from parent */
         }
-        .event h3 {
+        .event h2 {
             margin-top: 0;
             color: #1d2d44;
         }
         .event p {
             color: #748cab;
-        }
-        .event button {
-            margin-top: 10px;
-            background-color: #1d2d44;
-            color: #f0ebd8;
-            padding: 10px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .event button:hover {
-            background-color: #3e5c76;
-        }
-        .event button:focus {
-            outline: none;
         }
         .footer {
             text-align: center;
@@ -131,25 +108,78 @@
         .footer a:hover {
             text-decoration: underline;
         }
+        .a{
+            style
+        }
     </style>
 </head>
 <body>
-    @include('components.sidebarorg')
+    @include('components.sidebarinit')
     <div class="main-content">
         <div class="content">
-            <div class="section">
-                <h2>Available Events</h2>
-                    @foreach ($data as $item)
-                        <a href="{{url('/organizer/detail/'.$item->id)}}" class="event-link">
-                            <div class="event">
-                                <h3>{{$item->name}}</h3>
-                                <p>{{$item->description}}</p>
-                                <button>Take Event</button>
-                            </div>
-                        </a>
-                    @endforeach
-                <!-- Repeat this block for more available events -->
-            </div>
+            @if ($waiting->isNotEmpty())
+                <h1>Listed Waiting</h1>
+                @foreach ($waiting as $item)
+                    <a href="{{url('/initiator/event/'.$item->id)}}" class="event-link">
+                        <div class="event">
+                            <h2>{{$item->name}}</h2>
+                            <p> {{$item->description}}</p>
+                        </div>
+                    </a>
+                @endforeach
+            @endif
+        </div>
+        <div class="content">
+            @if ($reaching->isNotEmpty())
+                <h1>Waiting EO Response</h1>
+                @foreach ($reaching as $item)
+                    <a href="{{url('/initiator/event/'.$item->id)}}" class="event-link">
+                        <div class="event">
+                            <h2>{{$item->name}}</h2>
+                            <p> {{$item->description}}</p>
+                        </div>
+                    </a>
+                @endforeach
+            @endif
+        </div>
+        <div class="content">
+            @if ($response->isNotEmpty())
+                <h1>Waiting Your Response</h1>
+                @foreach ($response as $item)
+                    <a href="{{url('/initiator/event/'.$item->id)}}" class="event-link">
+                        <div class="event">
+                            <h2>{{$item->name}}</h2>
+                            <p>{{$item->description}}</p>
+                        </div>
+                    </a>
+                @endforeach
+            @endif
+        </div>
+        <div class="content">
+            @if ($ongoing->isNotEmpty())
+                <h1>Ongoing</h1>
+                @foreach ($ongoing as $item)
+                    <a href="{{url('/initiator/event/'.$item->id)}}" class="event-link">
+                        <div class="event">
+                            <h2>{{$item->name}}</h2>
+                            <p> {{$item->description}}</p>
+                        </div>
+                    </a>
+                @endforeach
+            @endif
+        </div>
+        <div class="content">
+            @if ($done->isNotEmpty())
+                <h1>Done</h1>
+                @foreach ($done as $item)
+                    <a href="{{url('/initiator/event/'.$item->id)}}" class="event-link">
+                        <div class="event">
+                            <h2>{{$item->name}}</h2>
+                            <p> {{$item->description}}</p>
+                        </div>
+                    </a>
+                @endforeach
+            @endif
         </div>
         <div class="footer">
             © 2024 EventLoka. All rights reserved. <a href="#">Privacy Policy</a>
