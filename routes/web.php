@@ -22,6 +22,8 @@ Route::middleware(['isLogin'])->group(function(){
         Route::get('/initiator',[EventController::class, 'indexInit']);
         Route::get('/initiator/create',[EventController::class, 'indexCreateEvent']);
         Route::post('/initiator/create',[EventController::class, 'storeEvent']);
+        Route::get('/initiator/event/{id}/find',[EventController::class, 'findEvent']);
+        Route::put('/initiator/event/{id}/find',[EventController::class, 'pickFindEvent']);
         Route::get('/initiator/event/{id}',[EventController::class, 'detailEvent']);
         Route::get('/initiator/event/{id}/edit',[EventController::class, 'editDetailEvent']);
         Route::put('/initiator/event/{id}/edit',[EventController::class, 'updateDetailEvent']);
@@ -43,6 +45,8 @@ Route::middleware(['isLogin'])->group(function(){
         Route::put('/organizer/take/{id}',[EventController::class, 'takeEvent']);
         Route::get('/organizer/event',[EventController::class, 'indexEventOrg']);
         Route::get('/organizer/my',[EventController::class, 'myEventOrg']);
+        Route::get('/organizer/event/{id}/request',[EventController::class, 'requestEventOrg']);
+        Route::put('/organizer/event/{id}/request',[EventController::class, 'updateRequestEventOrg']);
         Route::get('/organizer/event/{id}/ongoing',[EventController::class, 'ongoingEventOrg']);
         Route::put('/organizer/event/{id}/ongoing',[EventController::class, 'updateOngoingEventOrg']);
         Route::get('/organizer/event/{id}/done',[EventController::class, 'doneEventOrg']);

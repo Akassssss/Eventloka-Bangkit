@@ -206,7 +206,8 @@
                 <option value="1"> < 1 Juta</option>
                 <option value="2">1 Juta - 5 Juta</option>
                 <option value="3">5 Juta - 10 Juta</option>
-                <option value="4"> > 10 Juta</option>
+                <option value="4">10 Juta - 20 Juta</option>
+                <option value="5"> > 20 Juta</option>
                 <!-- Tambahkan opsi kategori lain sesuai kebutuhan -->
             </select>
             

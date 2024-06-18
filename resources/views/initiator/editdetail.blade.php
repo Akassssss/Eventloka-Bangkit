@@ -150,10 +150,11 @@
 
                     <label for="price">Preferred Fee:</label>
                     <select id="price" name="price" required>
-                        <option value="1" @if($data->price == 1) selected @endif>&lt; 1 Juta</option>
+                        <option value="1" @if($data->price == 1) selected @endif>&lt; < 1 Juta</option>
                         <option value="2" @if($data->price == 2) selected @endif>1 Juta - 5 Juta</option>
                         <option value="3" @if($data->price == 3) selected @endif>5 Juta - 10 Juta</option>
-                        <option value="4" @if($data->price == 4) selected @endif>&gt; 10 Juta</option>
+                        <option value="4" @if($data->price == 4) selected @endif>&gt; 10 Juta - 20 Juta</option>
+                        <option value="4" @if($data->price == 5) selected @endif>&gt; > 20 Juta</option>
                     </select>
                 </div>
                 <div class="buttons">

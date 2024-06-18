@@ -52,6 +52,21 @@ class EventController extends Controller
         return view('initiator/ongoing')->with('data', $data);
     }
     
+    public function requestEventOrg(string $id){
+
+        $data = Event::where('id', $id)->first();
+        $item = Initiator::where('userId', $data->initiator)->first();
+        return view('organizer/request')->with('data', $data)->with('item', $item);
+    }
+    public function updateRequestEventOrg(string $id){
+        $upData = [
+            'taken'=> true,
+
+        ];
+        Event::where('id', $id)->update($upData);
+
+        return redirect('/organizer');
+    }
     public function ongoingEventOrg(string $id){
 
         $data = Event::where('id', $id)->first();    
@@ -168,11 +183,13 @@ class EventController extends Controller
         ->with('done',$done);
     }
     public function myEventOrg(){
-        $ongoing = Event::where('organizer', auth()->user()->id)->where('done', false)->where('public', false)->get();
+        $ongoing = Event::where('organizer', auth()->user()->id)->where('done', false)->where('public', false)->where('taken', true)->get();
+        $request = Event::where('organizer', auth()->user()->id)->where('done', false)->where('public', false)->where('taken', false)->get();
         $done = Event::where('organizer', auth()->user()->id)->where('done', true)->get();
 
         return view('organizer/myevent')
         ->with('ongoing',$ongoing)
+        ->with('request',$request)
         ->with('done',$done);
     }
     public function profileInit(){
@@ -314,6 +331,8 @@ class EventController extends Controller
         return redirect('/initiator/event/'.$id);
     }
 
+    
+
     public function storeEvent(Request $request){
         $type = $request->input('action');
         
@@ -346,10 +365,58 @@ class EventController extends Controller
             Event::create($data);
             return redirect('/initiator');
         } elseif ($type == 'search') {
-            // Handle the form submission for searching organizers
+            $request->validate([
+                'name' => 'required|string',
+                'date' => 'required|date',
+                'location' => 'required|string',
+                'scale' => 'required|integer',
+                'description' => 'required|string',
+                'category' => 'required|string',
+                'theme' => 'required|string',
+                'budget' => 'required|string',
+                'price' => 'required|string',
+            ]);
+            $data = [
+                'name'=>$request->input('name'),
+                'date' =>$request->input( 'date'),
+                'location' =>$request->input( 'location'),
+                'scale' =>$request->input( 'scale'),
+                'description' =>$request->input( 'description'),
+                'category' =>$request->input( 'category'),
+                'theme' =>$request->input( 'theme'),
+                'budget' =>$request->input( 'budget'),
+                'price' =>$request->input( 'price'),
+                'initiator' => Auth::user()->id,
+                'app' => false,
+                'public' => false,
+            ];
+            $event = Event::create($data);
+            $id = $event->id;
+        
+        return redirect('/initiator/event/'.$id.'/find');
         } 
 
         return redirect('/initiator');
+    }
+
+    public function findEvent(string $id)
+    {
+        $data = Event::where('id',$id)->first();
+        $organizers = Organizer::where('categorySpecialist', $data->category)
+                            ->where('location', 'like', '%'.$data->location.'%')
+                            ->get();
+        
+        return view('/initiator/findeo')->with('organizers',$organizers)->with('data',$data);
+
+    }
+    public function pickFindEvent(Request $request, string $id)
+    {       
+        $data = [
+            'organizer' =>$request->input('id'),
+        ];
+        Event::where('id', $id)->update($data);
+        return redirect('/initiator');
+
     }
 
     public function indexAvailableOrg(){

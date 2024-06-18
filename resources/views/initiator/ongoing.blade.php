@@ -151,7 +151,10 @@
                             5 Juta - 10 Juta
                             @break
                         @case(4)
-                            > 10 Juta
+                            10 Juta - 20 Juta
+                            @break
+                        @case(5)
+                            > 20 Juta
                             @break
                     @endswitch
                 </p>

@@ -144,6 +144,19 @@
             @endif
         </div> --}}
         <div class="content">
+            @if ($request->isNotEmpty())
+                <h1>Waiting You Response</h1>
+                @foreach ($request as $item)
+                    <a href="{{url('/organizer/event/'.$item->id.'/request')}}" class="event-link">
+                        <div class="event">
+                            <h2>{{$item->name}}</h2>
+                            <p> {{$item->description}}</p>
+                        </div>
+                    </a>
+                @endforeach
+            @endif
+        </div>
+        <div class="content">
             @if ($ongoing->isNotEmpty())
                 <h1>Ongoing</h1>
                 @foreach ($ongoing as $item)

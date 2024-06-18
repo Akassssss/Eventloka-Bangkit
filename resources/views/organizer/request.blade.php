@@ -115,10 +115,68 @@
             text-decoration: none; /* Remove underline on hover */
             color: inherit; /* Optionally inherit the color from parent */
         }
+        form label {
+            display: block;
+            font-weight: bold;
+            margin: 10px 0 5px;
+            color: #1d2d44;
+        }
+        form input[type="text"],
+        form input[type="date"],
+        form input[type="number"],
+        form textarea,
+        form select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .popup-container {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .popup-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            /* max-width: 600px; */
+            border-radius: 5px;
+            position: relative;
+            max-height: 80vh; Maksimum tinggi popup
+            overflow-y: auto; /* Aktifkan scrollbar vertikal jika konten lebih panjang */
+            
+        }
+
+        .close-popup {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-popup:hover,
+        .close-popup:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    @include('components.sidebarinit')
+    @include('components.sidebarOrg')
     <div class="main-content">
         <div class="container">
             <h2>{{$data->name}}</h2>
@@ -151,26 +209,63 @@
                     @endswitch
                 </p>
             </div>
-            <div class="buttons">
-                <button type="button" ><a href="{{url('/initiator/event/'.$data->id.'/request')}}" class="event-link">Request List ({{$sum}})</button>
-                <button type="button" ><a href="{{url('/initiator/event/'.$data->id.'/edit')}}" class="event-link">Edit</a></button>
+            <form action="{{url('/organizer/event/'.$data->id.'/request')}}" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="buttons">
+                    <button type="submit" >Take</button>
+                    <button type="button" class="view-details-btn" >Detail </button>
+                </div>
+            </form>
+            <div class="popup-container">
+                <div class="popup-content">
+                    <span class="close-popup">&times;</span>
+                    <h2>Details of {{ $item->name }}</h2>
+                    <p><strong>Rating:</strong> {{ $item->rate }}</p>
+                    <p><strong>Hired:</strong> {{ $item->hired }}</p>
+                    <p><strong>Location:</strong> {{ $item->location }}</p>
+                    <p><strong>About:</strong> {{ $item->services }}</p>
+                    <!-- Tambahkan informasi detail lainnya sesuai kebutuhan -->
+                </div>
             </div>
         </div>
         <div class="footer">
             © 2024 EventLoka. All rights reserved. <a href="#">Privacy Policy</a>
         </div>
     </div>
-
-    <script>
-        function requestList() {
-            // Handle request list functionality, e.g., show a modal or perform an action
-            alert('Request List button clicked!');
-        }
-
-        function findEO() {
-            // Handle find EO functionality, e.g., redirect to search page or show results
-            alert('Find Suitable EO button clicked!');
-        }
-    </script>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const viewDetailsBtns = document.querySelectorAll('.view-details-btn');
+        const popups = document.querySelectorAll('.popup-container');
+        const closeBtns = document.querySelectorAll('.close-popup');
+
+        viewDetailsBtns.forEach((btn, index) => {
+            btn.addEventListener('click', function() {
+                popups[index].style.display = 'block';
+            });
+        });
+
+        closeBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                btn.closest('.popup-container').style.display = 'none';
+            });
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        const popups = document.querySelectorAll('.popup-content');
+
+        popups.forEach(popup => {
+            // Misalnya, jika tinggi konten melebihi 80% tinggi jendela, atur maksimum tinggi popup
+            const windowHeight = window.innerHeight;
+            const maxHeight = windowHeight * 0.8; // 80% tinggi jendela
+
+            if (popup.scrollHeight > maxHeight) {
+                popup.style.maxHeight = maxHeight + 'px';
+                popup.style.overflowY = 'auto';
+            }
+        });
+    });
+
+</script>
 </html>
