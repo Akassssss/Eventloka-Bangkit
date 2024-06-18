@@ -129,15 +129,6 @@
                     </div>
                 </a>
             @endforeach
-            <div class="event">
-                <h2>Event 1</h2>
-                <p>Description of Event 1. This section includes details about the event.</p>
-            </div>
-            <div class="event">
-                <h2>Event 2</h2>
-                <p>Description of Event 2. This section includes details about the event.</p>
-            </div>
-            <!-- Repeat this block for more events -->
         </div>
         <div class="footer">
             © 2024 EventLoka. All rights reserved. <a href="#">Privacy Policy</a>

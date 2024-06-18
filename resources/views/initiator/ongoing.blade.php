@@ -70,14 +70,32 @@
         .detail strong {
             color: #1d2d44;
         }
+        form label {
+            display: block;
+            font-weight: bold;
+            margin: 10px 0 5px;
+            color: #1d2d44;
+        }
+        form input[type="text"],
+        form input[type="date"],
+        form input[type="number"],
+        form textarea,
+        form select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+            font-family: 'Poppins', sans-serif;
+        }
         .buttons {
             margin-top: 20px;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
         }
         .buttons button {
-            width: calc(50% - 10px); /* Adjusted width for two buttons with space between */
-            padding: 10px;
+            padding: 10px 20px;
             background-color: #1d2d44;
             color: #f0ebd8;
             border: none;
@@ -104,16 +122,6 @@
         }
         .footer a:hover {
             text-decoration: underline;
-        }
-        .event-link {
-            text-decoration: none;
-            color: inherit; /* Optionally inherit the color from parent */
-        }
-
-        .event-link:hover {
-            /* Optional: Define hover styles */
-            text-decoration: none; /* Remove underline on hover */
-            color: inherit; /* Optionally inherit the color from parent */
         }
     </style>
 </head>
@@ -151,26 +159,24 @@
                     @endswitch
                 </p>
             </div>
-            <div class="buttons">
-                <button type="button" ><a href="{{url('/initiator/event/'.$data->id.'/request')}}" class="event-link">Request List ({{$sum}})</button>
-                <button type="button" ><a href="{{url('/initiator/event/'.$data->id.'/edit')}}" class="event-link">Edit</a></button>
-            </div>
+            <form action="{{url('/initiator/event/'.$data->id.'/ongoing')}}" method="POST">
+                @csrf
+                @method('PUT')
+                <label for="rate">Rate the Event:</label>
+                <input placeholder="{{$data->rate}}" value="{{$data->rate}}" type="number" id="rate" name="rate" min="1" max="5" required>
+
+                <label for="rateForOrg">Rate the Event organizer:</label>
+                <input placeholder="{{$data->rateForOrg}}" value="{{$data->rateForOrg}}" type="number" id="rateForOrg" name="rateForOrg" min="1" max="5" required>
+    
+                <div class="buttons">
+                    <button type="submit" >Done</button>
+                </div>
+            </form>
+            
         </div>
         <div class="footer">
             © 2024 EventLoka. All rights reserved. <a href="#">Privacy Policy</a>
         </div>
     </div>
-
-    <script>
-        function requestList() {
-            // Handle request list functionality, e.g., show a modal or perform an action
-            alert('Request List button clicked!');
-        }
-
-        function findEO() {
-            // Handle find EO functionality, e.g., redirect to search page or show results
-            alert('Find Suitable EO button clicked!');
-        }
-    </script>
 </body>
 </html>

@@ -148,16 +148,6 @@
                             </div>
                         </a>
                     @endforeach
-                <div class="event">
-                    <h3>Event 1</h3>
-                    <p>Description of Event 1. This section includes details about the event.</p>
-                    <button>Take Event</button>
-                </div>
-                <div class="event">
-                    <h3>Event 2</h3>
-                    <p>Description of Event 2. This section includes details about the event.</p>
-                    <button>Take Event</button>
-                </div>
                 <!-- Repeat this block for more available events -->
             </div>
         </div>

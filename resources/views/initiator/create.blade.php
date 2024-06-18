@@ -185,11 +185,14 @@
 
             <label for="category">Category:</label>
             <select id="category" name="category" required>
-                <option value="conference">Conference</option>
-                <option value="workshop">Workshop</option>
-                <option value="meetup">Meetup</option>
-                <option value="concert">Concert</option>
-                <!-- Tambahkan opsi kategori lain sesuai kebutuhan -->
+                <option value="conference">Charity</option>
+                <option value="competition">Competition</option>
+                <option value="Gathering">Gathering</option>
+                <option value="Festival">Festival</option>
+                <option value="Party">Party</option>
+                <option value="Seminar">Seminar</option>
+                <option value="Sport">Sport</option>
+                <option value="Wedding">Wedding</option>
             </select>
 
             <label for="theme">Theme:</label>
@@ -203,7 +206,8 @@
                 <option value="1"> < 1 Juta</option>
                 <option value="2">1 Juta - 5 Juta</option>
                 <option value="3">5 Juta - 10 Juta</option>
-                <option value="4"> > 10 Juta</option>
+                <option value="4">10 Juta - 20 Juta</option>
+                <option value="5"> > 20 Juta</option>
                 <!-- Tambahkan opsi kategori lain sesuai kebutuhan -->
             </select>
             

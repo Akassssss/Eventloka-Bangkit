@@ -115,10 +115,29 @@
             text-decoration: none; /* Remove underline on hover */
             color: inherit; /* Optionally inherit the color from parent */
         }
+        form label {
+            display: block;
+            font-weight: bold;
+            margin: 10px 0 5px;
+            color: #1d2d44;
+        }
+        form input[type="text"],
+        form input[type="date"],
+        form input[type="number"],
+        form textarea,
+        form select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+            font-family: 'Poppins', sans-serif;
+        }
     </style>
 </head>
 <body>
-    @include('components.sidebarinit')
+    @include('components.sidebarOrg')
     <div class="main-content">
         <div class="container">
             <h2>{{$data->name}}</h2>
@@ -151,26 +170,23 @@
                     @endswitch
                 </p>
             </div>
-            <div class="buttons">
-                <button type="button" ><a href="{{url('/initiator/event/'.$data->id.'/request')}}" class="event-link">Request List ({{$sum}})</button>
-                <button type="button" ><a href="{{url('/initiator/event/'.$data->id.'/edit')}}" class="event-link">Edit</a></button>
-            </div>
+            <form action="{{url('/organizer/event/'.$data->id.'/ongoing')}}" method="POST">
+                @csrf
+                @method('PUT')
+                <label for="rate">Rate the Event:</label>
+                <input placeholder="{{$data->rate}}" value="{{$data->rate}}" type="number" id="rate" name="rate" min="1" max="5" required>
+
+                <label for="rateForInit">Rate the Event Initiator:</label>
+                <input placeholder="{{$data->rateForInit}}" value="{{$data->rateForInit}}" type="number" id="rateForInit" name="rateForInit" min="1" max="5" required>
+    
+                <div class="buttons">
+                    <button type="submit" >Done</button>
+                </div>
+            </form>
         </div>
         <div class="footer">
             © 2024 EventLoka. All rights reserved. <a href="#">Privacy Policy</a>
         </div>
     </div>
-
-    <script>
-        function requestList() {
-            // Handle request list functionality, e.g., show a modal or perform an action
-            alert('Request List button clicked!');
-        }
-
-        function findEO() {
-            // Handle find EO functionality, e.g., redirect to search page or show results
-            alert('Find Suitable EO button clicked!');
-        }
-    </script>
 </body>
 </html>

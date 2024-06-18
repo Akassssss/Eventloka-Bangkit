@@ -11,9 +11,12 @@ class Initiator extends Model
     protected $table = 'initiator';
     protected $fillable = [
         'userId',
+        'email',
         'name',
         'rate',
+        'eventRate',
         'hired',
         'location',
+        'about',
     ];
 }

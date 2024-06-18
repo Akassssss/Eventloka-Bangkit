@@ -15,10 +15,13 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('userId');
+            $table->string('email');
             $table->string('name');
-            $table->integer('rate')->default(0);
-            $table->integer('hired')->default(0);	;
+            $table->float('rate')->default(0);
+            $table->float('eventRate')->default(0);
+            $table->integer('hired')->default(0);
             $table->string('location');
+            $table->string('about');
         });
     }
 

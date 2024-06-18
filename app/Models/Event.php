@@ -24,5 +24,11 @@ class Event extends Model
         'app',
         'budget',
         'public',
+        'done',
+        'taken',
+        'doneByInit',
+        'rateForOrg',
+        'doneByOrg',
+        'rateForInit',
     ];
 }
