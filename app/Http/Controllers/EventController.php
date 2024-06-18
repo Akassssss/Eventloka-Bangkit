@@ -57,6 +57,16 @@ class EventController extends Controller
         $data = Event::where('id', $id)->first();    
         return view('organizer/ongoing')->with('data', $data);
     }
+    public function doneEventInit(string $id){
+
+        $data = Event::where('id', $id)->first();    
+        return view('initiator/done')->with('data', $data);
+    }
+    public function doneEventOrg(string $id){
+
+        $data = Event::where('id', $id)->first();    
+        return view('organizer/done')->with('data', $data);
+    }
     public function acceptRequestEvent(Request $request, string $id){
 
         $data = [
@@ -158,14 +168,12 @@ class EventController extends Controller
         ->with('done',$done);
     }
     public function myEventOrg(){
-
         $ongoing = Event::where('organizer', auth()->user()->id)->where('done', false)->where('public', false)->get();
         $done = Event::where('organizer', auth()->user()->id)->where('done', true)->get();
 
         return view('organizer/myevent')
         ->with('ongoing',$ongoing)
         ->with('done',$done);
-
     }
     public function profileInit(){
         $userId = Auth::id();
@@ -181,8 +189,27 @@ class EventController extends Controller
                 'about'=> '',
             ];
             Initiator::create($data);
+            $initiator = Initiator::where('userId', $userId)->first();
         }
-        $initiator = Initiator::where('userId', $userId)->first();
+        
+        $hired = Event::where('initiator', $userId)->where('done',true)->count();
+        if($hired != 0){
+            $eventRate = Event::where('initiator', $userId)->where('done',true)->sum('rate');
+            $eventRated = round($eventRate / $hired, 2); 
+            $rate = Event::where('initiator', $userId)->where('done',true)->sum('rateForInit');
+            $rated = round($rate / $hired, 2); 
+            if($initiator->hired != $hired OR $initiator->eventRate != $eventRated OR $initiator->rate != $rated){
+                $data = [
+                    'eventRate'=> $eventRated,
+                    'rate'=> $rated,
+                    'hired'=> $hired,
+                ];
+                Initiator::where('userId', $userId)->update($data);
+                $initiator = Initiator::where('userId', $userId)->first();
+            }
+        }
+        
+
 
         return view('initiator/profile')->with('initiator',$initiator);
 
@@ -197,8 +224,25 @@ class EventController extends Controller
                 'email' => auth()->user()->email
             ];
             Organizer::create($data);
+            $organizer = Organizer::where('userId', $userId)->first();
         }
-        $organizer = Organizer::where('userId', $userId)->first();
+        $hired = Event::where('organizer', $userId)->where('done',true)->count();
+        if($hired!=0){
+            $eventRate = Event::where('organizer', $userId)->where('done',true)->sum('rate');
+            $eventRated = round($eventRate / $hired, 2); 
+            $rate = Event::where('organizer', $userId)->where('done',true)->sum('rateForOrg');
+            $rated = round($rate / $hired, 2); 
+            if($organizer->hired != $hired OR $organizer->eventRate != $eventRated OR $organizer->rate != $rated){
+                $data = [
+                    'eventRate'=> $eventRated,
+                    'rate'=> $rated,
+                    'hired'=> $hired,
+                ];
+                Organizer::where('userId', $userId)->update($data);
+                $organizer = Organizer::where('userId', $userId)->first();
+            }
+        }
+        
 
         return view('organizer/profile')->with('organizer',$organizer);
 
@@ -212,7 +256,6 @@ class EventController extends Controller
     }
     public function updateProfileOrg(Request $request){
         $userId = Auth::id();
-        $organizer = Organizer::where('userId', $userId)->first();
         $data = [
             'name' => $request->input('name'),
             'location' => $request->input('location'),
@@ -244,6 +287,31 @@ class EventController extends Controller
         $sum = count($organizers);
 
         return view('initiator/detail')->with('data', $data)->with('sum', $sum);
+    }
+    public function editDetailEvent(string $id){
+
+        $data = Event::where('id', $id)->first();
+
+        return view('initiator/editdetail')->with('data', $data);
+    }
+    public function updateDetailEvent(Request $request, string $id){
+
+        $data = [
+            'name'=>$request->input('name'),
+            'date' =>$request->input( 'date'),
+            'location' =>$request->input( 'location'),
+            'scale' =>$request->input( 'scale'),
+            'description' =>$request->input( 'description'),
+            'category' =>$request->input( 'category'),
+            'theme' =>$request->input( 'theme'),
+            'budget' =>$request->input( 'budget'),
+            'price' =>$request->input( 'price'),
+            'organizer' => null
+        ];
+        Event::where('id', $id)->update($data);
+
+
+        return redirect('/initiator/event/'.$id);
     }
 
     public function storeEvent(Request $request){

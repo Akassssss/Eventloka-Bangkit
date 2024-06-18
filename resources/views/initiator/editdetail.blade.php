@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EventLoka - Event Details</title>
+    <title>Edit Event</title>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -59,16 +59,24 @@
             padding-bottom: 10px;
             margin-bottom: 20px;
         }
-        .detail {
+        .profile-detail {
             margin-bottom: 20px;
         }
-        .detail p {
-            color: #748cab;
-            margin-bottom: 10px;
-            line-height: 1.6;
-        }
-        .detail strong {
+        .profile-detail label {
+            display: block;
             color: #1d2d44;
+            margin-bottom: 5px;
+        }
+        .profile-detail input, .profile-detail textarea, .profile-detail select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .profile-detail textarea {
+            resize: vertical;
         }
         .buttons {
             margin-top: 20px;
@@ -105,69 +113,58 @@
         .footer a:hover {
             text-decoration: underline;
         }
-        .event-link {
-            text-decoration: none;
-            color: inherit; /* Optionally inherit the color from parent */
-        }
-
-        .event-link:hover {
-            /* Optional: Define hover styles */
-            text-decoration: none; /* Remove underline on hover */
-            color: inherit; /* Optionally inherit the color from parent */
-        }
     </style>
 </head>
 <body>
     @include('components.sidebarinit')
     <div class="main-content">
         <div class="container">
-            <h2>{{$data->name}}</h2>
-            <div class="detail">
-                <p><strong>Date:</strong> {{$data->date}}</p>
-                <p><strong>Location:</strong> {{$data->location}}</p>
-                <p><strong>Scale:</strong> {{$data->scale}} Persons</p>
-                <p><strong>Description:</strong></p>
-                <p>{{$data->description}}</p>
-                <p><strong>Category:</strong> {{$data->category}}</p>
-                <p><strong>Theme:</strong> {{$data->theme}}</p>
-                <p><strong>Budget:</strong> {{$data->budget}}</p>
-                <p><strong>Preferred Fee:</strong> 
-                    @switch($data->price)
-                        @case(1)
-                            < 1 Juta
-                            @break
-                        @case(2)
-                            1 Juta - 5 Juta
-                            @break
-                        @case(3)
-                            5 Juta - 10 Juta
-                            @break
-                        @case(4)
-                            > 10 Juta
-                            @break
-                    @endswitch
-                </p>
-            </div>
-            <div class="buttons">
-                <button type="button" ><a href="{{url('/initiator/event/'.$data->id.'/request')}}" class="event-link">Request List ({{$sum}})</button>
-                <button type="button" ><a href="{{url('/initiator/event/'.$data->id.'/edit')}}" class="event-link">Edit</a></button>
-            </div>
+            <h2>Edit Event</h2>
+            <form action="{{ url('/initiator/event/' . $data->id . '/edit') }}" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="profile-detail">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" value="{{ $data->name }}" required>
+
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date" value="{{ $data->date }}" required>
+
+                    <label for="location">Location:</label>
+                    <input type="text" id="location" name="location" value="{{ $data->location }}" required>
+
+                    <label for="scale">Scale:</label>
+                    <input type="number" id="scale" name="scale" value="{{ $data->scale }}" required>
+
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" required>{{ $data->description }}</textarea>
+
+                    <label for="category">Category:</label>
+                    <input type="text" id="category" name="category" value="{{ $data->category }}" required>
+
+                    <label for="theme">Theme:</label>
+                    <input type="text" id="theme" name="theme" value="{{ $data->theme }}" required>
+
+                    <label for="budget">Budget:</label>
+                    <input type="number" id="budget" name="budget" value="{{ $data->budget }}" required>
+
+                    <label for="price">Preferred Fee:</label>
+                    <select id="price" name="price" required>
+                        <option value="1" @if($data->price == 1) selected @endif>&lt; 1 Juta</option>
+                        <option value="2" @if($data->price == 2) selected @endif>1 Juta - 5 Juta</option>
+                        <option value="3" @if($data->price == 3) selected @endif>5 Juta - 10 Juta</option>
+                        <option value="4" @if($data->price == 4) selected @endif>&gt; 10 Juta</option>
+                    </select>
+                </div>
+                <div class="buttons">
+                    <button type="submit">Save Changes</button>
+                    <button type="button" onclick="window.location.href='{{ url('/initiator/event/'.$data->id) }}'">Cancel</button>
+                </div>
+            </form>
         </div>
         <div class="footer">
             © 2024 EventLoka. All rights reserved. <a href="#">Privacy Policy</a>
         </div>
     </div>
-
-    <script>
-        function requestList() {
-            // Handle request list functionality, e.g., show a modal or perform an action
-            alert('Request List button clicked!');
-        }
-
-        function findEO() {
-            // Handle find EO functionality, e.g., redirect to search page or show results
-            alert('Find Suitable EO button clicked!');
-        }
-    </script>
 </body>
 </html>

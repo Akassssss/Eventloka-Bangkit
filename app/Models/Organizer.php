@@ -15,6 +15,7 @@ class Organizer extends Model
         'email',
         'name',
         'rate',
+        'eventRate',
         'hired',
         'location',
         'categorySpecialist',

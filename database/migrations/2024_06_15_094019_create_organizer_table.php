@@ -17,8 +17,9 @@ return new class extends Migration
             $table->string('userId');
             $table->string('email');
             $table->string('name')->nullable();
-            $table->integer('rate')->default(0);
-            $table->integer('hired')->default(0);	;
+            $table->float('rate')->default(0);
+            $table->float('eventRate')->default(0);
+            $table->integer('hired')->default(0);	
             $table->string('location')->nullable();
             $table->string('categorySpecialist')->nullable();
             $table->integer('scaleSpecialist')->nullable();

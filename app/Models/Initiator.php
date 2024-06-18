@@ -14,6 +14,7 @@ class Initiator extends Model
         'email',
         'name',
         'rate',
+        'eventRate',
         'hired',
         'location',
         'about',
