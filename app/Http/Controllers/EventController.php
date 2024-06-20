@@ -168,7 +168,9 @@ class EventController extends Controller
         $waiting = Event::where('initiator', auth()->user()->id)->where('public', true)
         ->where('organizer', null)->get();
         $reaching = Event::where('initiator', auth()->user()->id)->where('public', false)
-        ->where('organizer', null)->get();
+        ->where('organizer', null)->where('taken',false)->get();
+        $waiteo = Event::where('initiator', auth()->user()->id)->where('public', false)
+        ->whereNotNull('organizer')->where('taken',false)->get();
         $response = Event::where('initiator', auth()->user()->id)->where('public', true)
         ->whereNotNull('organizer')->get();
         $ongoing = Event::where('initiator', auth()->user()->id)->where('public', false)
@@ -178,6 +180,7 @@ class EventController extends Controller
         return view('initiator/myevent')
         ->with('waiting',$waiting)
         ->with('reaching',$reaching)
+        ->with('waiteo',$waiteo)
         ->with('response',$response)
         ->with('ongoing',$ongoing)
         ->with('done',$done);
@@ -457,4 +460,18 @@ class EventController extends Controller
     public function indexEventOrg(){
         return view('/organizer/event');
     }
+    public function waitingEoEvent(string $id){
+        
+        $data = Event::where('id', $id)->first();
+
+        return view('initiator/waiting')->with('data', $data);
+    }
+    public function reachingEoEvent(string $id){
+        
+        $data = Event::where('id', $id)->first();
+
+        return view('initiator/reaching')->with('data', $data);
+    }
+
+
 }

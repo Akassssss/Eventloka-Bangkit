@@ -25,6 +25,8 @@ Route::middleware(['isLogin'])->group(function(){
         Route::get('/initiator/event/{id}/find',[EventController::class, 'findEvent']);
         Route::put('/initiator/event/{id}/find',[EventController::class, 'pickFindEvent']);
         Route::get('/initiator/event/{id}',[EventController::class, 'detailEvent']);
+        Route::get('/initiator/event/{id}/reaching',[EventController::class, 'reachingEoEvent']);
+        Route::get('/initiator/event/{id}/waiting',[EventController::class, 'waitingEoEvent']);
         Route::get('/initiator/event/{id}/edit',[EventController::class, 'editDetailEvent']);
         Route::put('/initiator/event/{id}/edit',[EventController::class, 'updateDetailEvent']);
         Route::get('/initiator/event/{id}/request',[EventController::class, 'requestEvent']);
