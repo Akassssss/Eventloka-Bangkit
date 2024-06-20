@@ -131,9 +131,22 @@
         </div>
         <div class="content">
             @if ($reaching->isNotEmpty())
-                <h1>Waiting EO Response</h1>
+                <h1>Reach Your EO</h1>
                 @foreach ($reaching as $item)
-                    <a href="{{url('/initiator/event/'.$item->id)}}" class="event-link">
+                    <a href="{{url('/initiator/event/'.$item->id.'/reaching')}}" class="event-link">
+                        <div class="event">
+                            <h2>{{$item->name}}</h2>
+                            <p> {{$item->description}}</p>
+                        </div>
+                    </a>
+                @endforeach
+            @endif
+        </div>
+        <div class="content">
+            @if ($waiteo->isNotEmpty())
+                <h1>Waiting EO Response</h1>
+                @foreach ($waiteo as $item)
+                    <a href="{{url('/initiator/event/'.$item->id.'/waiting')}}" class="event-link">
                         <div class="event">
                             <h2>{{$item->name}}</h2>
                             <p> {{$item->description}}</p>
