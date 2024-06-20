@@ -23,3 +23,40 @@ The Event Marketplace Application is designed to connect event initiators with e
 - Payment Gateway Integration: Implementing secure payment processing within the platform for seamless financial transactions.
 
 - In-App Messaging: Adding a chat feature to facilitate direct communication between event initiators and organizers, enhancing collaboration and coordination.
+## Contributing
+
+Fork the repository and submit pull requests for changes or enhancements.
+
+
+## Installation
+
+
+1. Clone the repository:
+```bash
+  git clone https://github.com/your/repository.git
+```
+
+2. Install dependencies:
+```bash
+  composer install
+```
+
+3. Configure environment variables and database settings in .env
+
+
+4. Migrate the database
+```bash
+  php artisan migrate
+```
+
+
+5. Start the application:
+```bash
+  php artisan serve
+```
+
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
